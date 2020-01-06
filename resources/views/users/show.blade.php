@@ -1,31 +1,15 @@
 @extends('layouts.app')
+
 @section('content')
-    <div class='row'>
-        <aside class='col-sm-4'>
-            <div class='card'>
-                <div class='card-header'>
-                    <h3 class='card-title'>{{ $user->name }}</h3>
-                </div>
-                <div class='card-boddy'>
-                    <img class="rounded img-fluid" src="{{ Gravatar::src($user->email, 500) }}" alt="">
-                </div>
-            </div>
-            @if (Auth::id() === $user->id)
-                {!! link_to_route('users.edit', 'Edit Profile', ['id' => Auth::id()], ['class' => 'btn btn-primary btn-block']) !!}
-                {!! Form::model(['route' => ['users.destroy', 'id' => Auth::id()], 'method' => 'delete']) !!}
-                    {!! Form::submit('Acount delete', ['class' => 'btn btn-danger btn-block']) !!}
-                {!! Form::close() !!}
-            @endif
+    <div class="row">
+        <aside class="col-sm-4">
+            @include('users.card', ['user' => $user])
         </aside>
-        <div class='col-sm-8'>
-            <ul class='nav nav-tabs nav-justified mb-3'>
-                <li class='nav-item'><a href='{{ route('users.show', ['id' => $user->id]) }}' class='nav-link {{ Request::is('users/' . $user->id) ? 'active' : '' }}'>TimeLine <span class='badge badge-secondary'>{{ $count_microposts }}</span></a></li>
-                <li class='nav-item'><a href='#' class='nav-link'>Followings</a></li>
-                <li class='nav-item'><a href='#' class='nav-link'>Followers</a></li>
-            </ul>
-            @if (Auth::id() === $user->id)
+        <div class="col-sm-8">
+            @include('users.navtabs', ['user' => $user])
+            @if (Auth::id() == $user->id)
                 {!! Form::open(['route' => 'microposts.store']) !!}
-                    <div class='form-group'>
+                    <div class="form-group">
                         {!! Form::textarea('content', old('content'), ['class' => 'form-control', 'rows' => '2']) !!}
                         {!! Form::submit('Post', ['class' => 'btn btn-primary btn-block']) !!}
                     </div>
@@ -34,6 +18,7 @@
             @if (count($microposts) > 0)
                 @include('microposts.microposts', ['microposts' => $microposts])
             @endif
+            
         </div>
     </div>
 @endsection
