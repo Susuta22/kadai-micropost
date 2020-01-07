@@ -25,7 +25,7 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        $microposts = $user->microposts()->orderBy('created_at', 'desc')->paginate(10);
+        $microposts = $user->feed_microposts()->orderBy('created_at', 'desc')->paginate(10);
         
         $data = [
             'user' => $user,
@@ -40,9 +40,12 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         
-        return view('users.edit', [
-            'user' => $user,
-        ]);
+        if (\Auth::id() == $user->id) {
+            return view('users.edit', [
+                'user' => $user,
+            ]);
+        }
+        return redirect('/');
     }
     
     public function update(Request $request, $id)
@@ -62,12 +65,9 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         
-        if (Auth::id() === $user->id) {
+        if (Auth::id() == $user->id) {
             $user->delete();
-            
-            return redirect('/');
         }
-        
         
         return redirect('/');
     }

@@ -7,3 +7,6 @@
     </div>
 </div>
 @include('user_follow.follow_button', ['user' => $user])
+@if (\Auth::id() == $user->id)    
+    {!! link_to_route('users.edit', 'Profile edit', ['id' => $user->id], ['class' => 'btn btn-primary btn-block']) !!}
+@endif
