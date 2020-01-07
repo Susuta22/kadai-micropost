@@ -17,7 +17,10 @@ class MicropostsController extends Controller
                 'user' => $user,
                 'microposts' => $microposts,
             ];
+        
+            $data += $this->counts($user);
         }
+        
         return view('welcome', $data);
     }
     

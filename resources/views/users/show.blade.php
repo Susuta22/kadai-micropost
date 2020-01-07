@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('content')
-    
         <div class="row">
             <aside class="col-sm-4">
                 @include('users.card', ['user' => $user])

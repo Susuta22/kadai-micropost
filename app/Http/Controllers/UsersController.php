@@ -16,10 +16,7 @@ class UsersController extends Controller
         
         return view('users.index', [
             'users' => $users,
-            
         ]);
-    
-        
     }
     
     public function show($id)
